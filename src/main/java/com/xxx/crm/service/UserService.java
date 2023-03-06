@@ -5,6 +5,7 @@ import com.xxx.crm.dao.UserMapper;
 import com.xxx.crm.model.UserMode;
 import com.xxx.crm.utils.AssertUtil;
 import com.xxx.crm.utils.Md5Util;
+import com.xxx.crm.utils.UserIDBase64;
 import com.xxx.crm.vo.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,9 @@ public class UserService extends BaseService<User, Integer> {
      */
     private UserMode buildUserInfo(User user) {
         UserMode userMode = new UserMode();
-        userMode.setUserId(user.getId());
+        // userMode.setUserId(user.getId());
+        // 设置加密过得用户id
+        userMode.setUserIdStr(UserIDBase64.encoderUserID(user.getId()));
         userMode.setUserName(user.getUserName());
         userMode.setTrueName(user.getTrueName());
         return userMode;

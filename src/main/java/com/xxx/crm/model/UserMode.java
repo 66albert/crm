@@ -7,17 +7,26 @@ package com.xxx.crm.model;
  */
 public class UserMode {
 
-    private Integer userId;
+    // private Integer userId;
     private String userName;
     private String trueName;
 
-    public Integer getUserId() {
+    private String userIdStr;   // 加密后的用户id
+
+    public String getUserIdStr() {
+        return userIdStr;
+    }
+
+    public void setUserIdStr(String userIdStr) {
+        this.userIdStr = userIdStr;
+    }
+    /*public Integer getUserId() {
         return userId;
     }
 
     public void setUserId(Integer userId) {
         this.userId = userId;
-    }
+    }*/
 
     public String getUserName() {
         return userName;

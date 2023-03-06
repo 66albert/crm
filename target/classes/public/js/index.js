@@ -39,9 +39,9 @@ layui.use(['form','jquery','jquery_cookie'], function () {
                      */
                     layer.msg("登录成功！", function () {
                         // 将用户信息设置到cookie中
-                        $.cookie("userId",result.result.userId);
-                        $.cookie("userId",result.result.userName);
-                        $.cookie("userId",result.result.trueName);
+                        $.cookie("userIdStr",result.result.userIdStr);
+                        $.cookie("userName",result.result.userName);
+                        $.cookie("trueName",result.result.trueName);
                         // 登录成功后跳转到首页
                         window.location.href = ctx + "/main"
                     })
@@ -51,7 +51,6 @@ layui.use(['form','jquery','jquery_cookie'], function () {
                 }
             }
         });
-
         return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
     });
 
