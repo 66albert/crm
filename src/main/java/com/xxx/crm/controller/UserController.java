@@ -8,6 +8,7 @@ import com.xxx.crm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,7 +31,7 @@ public class UserController extends BaseController {
      * @param userPwd
      * @return
      */
-    @GetMapping("login")
+    @PostMapping("login")
     @ResponseBody
     public ResultInfo userLogin(String userName, String userPwd) {
 
