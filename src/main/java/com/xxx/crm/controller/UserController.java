@@ -40,7 +40,13 @@ public class UserController extends BaseController {
 
         ResultInfo resultInfo = new ResultInfo();
 
-        // 通过try catch铺货service层的异常，如果service层抛出异常，则登陆失败，否则登录成功
+        // 调用service层的登录方法
+        UserMode userMode = userService.userLogin(userName, userPwd);
+
+        // 设置resultInfo的result（将数据返回给请求）
+        resultInfo.setResult(userMode);
+
+       /* // 通过try catch铺货service层的异常，如果service层抛出异常，则登陆失败，否则登录成功
         try {
             // 调用service层的登录方法
             UserMode userMode = userService.userLogin(userName, userPwd);
@@ -56,7 +62,7 @@ public class UserController extends BaseController {
             resultInfo.setCode(500);
             resultInfo.setMsg("登录失败！");
             e.printStackTrace();
-        }
+        }*/
 
         return resultInfo;
     }
@@ -73,7 +79,15 @@ public class UserController extends BaseController {
     @ResponseBody
     public ResultInfo updateUserPassword(HttpServletRequest request,
                                          String oldPassword, String newPassword, String repeatPassword) {
+
         ResultInfo resultInfo = new ResultInfo();
+        // 获取cookie中的用户ID
+        Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
+        // 调用service层的修改密码方法
+        userService.updatePassword(userId, oldPassword, newPassword, repeatPassword);
+
+
+        /*ResultInfo resultInfo = new ResultInfo();
         try {
             // 获取cookie中的用户ID
             Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
@@ -87,7 +101,7 @@ public class UserController extends BaseController {
             resultInfo.setCode(500);
             resultInfo.setMsg("修改密码失败！");
             e.printStackTrace();
-        }
+        }*/
         return resultInfo;
     }
 
