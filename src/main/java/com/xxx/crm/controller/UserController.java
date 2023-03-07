@@ -88,7 +88,16 @@ public class UserController extends BaseController {
             resultInfo.setMsg("修改密码失败！");
             e.printStackTrace();
         }
-
         return resultInfo;
+    }
+
+    /**
+     * 进入修改密码的页面
+     * @return
+     */
+    @RequestMapping("toPasswordPage")
+    public String toPasswordPage() {
+
+        return "user/password";
     }
 }
