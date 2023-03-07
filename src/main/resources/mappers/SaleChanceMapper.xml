@@ -220,4 +220,25 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!-- 多条件查询 -->
+  <select id="selectByParams" parameterType="com.xxx.crm.query.SaleChanceQuery" resultType="com.xxx.crm.vo.SaleChance">
+    select
+        <include refid="Base_Column_List" />
+    from
+        t_sale_chance
+    <where>
+      is_valid = 1
+      <if test="customerName != null and customerName != ''">
+        and customer_name like concat('%',#{customerName},'%')
+      </if>
+      <if test="createMan != null and createMan != ''">
+        and create_man = #{createMan}
+      </if>
+      <if test="state != null">
+        and state = #{state}
+      </if>
+    </where>
+  </select>
+
 </mapper>

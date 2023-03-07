@@ -30,6 +30,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
                 // 设置需要拦截的资源
                 .addPathPatterns("/**")     // "/**"表示默认拦截所有资源
                 // 设置需要放行的资源
-                .excludePathPatterns("/css/**","/images/**","/lib/**","/index","/user/login","/js/**");
+                .excludePathPatterns("/css/**","/images/**","/lib/**","/index","/user/login","/js/**","/sale_chance/list");
     }
 }
