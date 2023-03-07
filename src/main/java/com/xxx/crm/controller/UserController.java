@@ -5,12 +5,15 @@ import com.xxx.crm.base.ResultInfo;
 import com.xxx.crm.exceptions.ParamsException;
 import com.xxx.crm.model.UserMode;
 import com.xxx.crm.service.UserService;
+import com.xxx.crm.utils.LoginUserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author ：刘彬
@@ -52,6 +55,37 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             resultInfo.setCode(500);
             resultInfo.setMsg("登录失败！");
+            e.printStackTrace();
+        }
+
+        return resultInfo;
+    }
+
+    /**
+     * 用户修改密码
+     * @param request
+     * @param oldPassword
+     * @param newPassword
+     * @param repeatPassword
+     * @return
+     */
+    @PostMapping("updatePwd")
+    @ResponseBody
+    public ResultInfo updateUserPassword(HttpServletRequest request,
+                                         String oldPassword, String newPassword, String repeatPassword) {
+        ResultInfo resultInfo = new ResultInfo();
+        try {
+            // 获取cookie中的用户ID
+            Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
+            // 调用service层的修改密码方法
+            userService.updatePassword(userId, oldPassword, newPassword, repeatPassword);
+        } catch (ParamsException p) {
+            resultInfo.setCode(p.getCode());
+            resultInfo.setMsg(p.getMsg());
+            p.printStackTrace();
+        } catch (Exception e) {
+            resultInfo.setCode(500);
+            resultInfo.setMsg("修改密码失败！");
             e.printStackTrace();
         }
 
