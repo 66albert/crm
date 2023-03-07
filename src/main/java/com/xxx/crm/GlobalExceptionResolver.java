@@ -2,6 +2,7 @@ package com.xxx.crm;
 
 import com.alibaba.fastjson.JSON;
 import com.xxx.crm.base.ResultInfo;
+import com.xxx.crm.exceptions.NoLoginException;
 import com.xxx.crm.exceptions.ParamsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,6 +44,17 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
      */
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception e) {
+
+        /**
+         * 非法请求拦截
+         *  - 判断是否抛出未登录异常
+         * - 如果抛出异常，则要求用户登录，重定向跳转到登录页面
+         */
+        if (e instanceof NoLoginException) {
+            // 重定向跳转到登录页面
+            ModelAndView modelAndView = new ModelAndView("redirect:/index");
+            return modelAndView;
+        }
 
         /**
          * 设置默认的异常处理（返回视图）
