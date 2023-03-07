@@ -33,4 +33,13 @@ public class SaleChanceController extends BaseController {
     public Map<String, Object> querySaleChanceByParams(SaleChanceQuery saleChanceQuery) {
         return saleChanceService.querySaleChanceByParams(saleChanceQuery);
     }
+
+    /**
+     * 进入营销机会管理页面
+     * @return
+     */
+    @RequestMapping("index")
+    public String index() {
+        return "/saleChance/sale_chance";
+    }
 }
