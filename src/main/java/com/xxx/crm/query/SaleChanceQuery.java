@@ -14,7 +14,9 @@ import com.xxx.crm.base.BaseQuery;
 public class SaleChanceQuery extends BaseQuery {
 
     // 分页参数
-
+    /**
+     * 继承的BaseQuery类，BaseQuery类中以定义分页参数
+     */
 
     // 条件参数
     private String customerName;    // 客户名

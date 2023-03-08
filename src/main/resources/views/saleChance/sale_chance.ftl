@@ -11,8 +11,7 @@
 		<form class="layui-form">
 			<div class="layui-inline">
 				<div class="layui-input-inline">
-					<input type="text" name="customerName"
-						   class="layui-input
+					<input type="text" name="customerName" class="layui-input
 					searchVal" placeholder="客户名" />
 				</div>
 				<div class="layui-input-inline">
@@ -31,10 +30,10 @@
 			</div>
 		</form>
 	</blockquote>
-	<!-- 在页面放置一个元素 <table id="demo"></table>，然后通过 table.render() 方法指定该容器 -->
+	<#-- 在页面放置一个元素 <table id="demo"></table>，然后通过 table.render() 方法指定该容器 -->
 	<table id="saleChanceList" class="layui-table"  lay-filter="saleChances"></table>
 
-
+	<#-- 头部工具栏 -->
 	<script type="text/html" id="toolbarDemo">
 		<div class="layui-btn-container">
 			<a class="layui-btn layui-btn-normal addNews_btn" lay-event="add">
@@ -49,7 +48,7 @@
 	</script>
 
 
-	<!--操作-->
+	<!-- 行工具栏 操作-->
 	<script id="saleChanceListBar" type="text/html">
 		<a class="layui-btn layui-btn-xs" id="edit" lay-event="edit">编辑</a>
 		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
