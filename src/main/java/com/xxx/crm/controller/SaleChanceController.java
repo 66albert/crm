@@ -63,4 +63,13 @@ public class SaleChanceController extends BaseController {
         saleChanceService.addSaleChance(saleChance);
         return success("营销机会数据添加成功！");
     }
+
+    /**
+     * 进入添加或者修改营销机会数据页面
+     * @return
+     */
+    @RequestMapping("toSaleChancePage")
+    public String toSaleChancePage() {
+        return "saleChance/add_update";
+    }
 }

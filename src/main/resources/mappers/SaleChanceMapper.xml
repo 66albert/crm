@@ -229,7 +229,7 @@
         s.update_date, u.user_name as uname
     from
         t_sale_chance s
-    inner join
+    left join
         t_user u
     on
         s.assign_man = u.id
