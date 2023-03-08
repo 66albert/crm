@@ -1,14 +1,18 @@
 package com.xxx.crm.controller;
 
 import com.xxx.crm.base.BaseController;
+import com.xxx.crm.base.ResultInfo;
 import com.xxx.crm.query.SaleChanceQuery;
 import com.xxx.crm.service.SaleChanceService;
+import com.xxx.crm.utils.CookieUtil;
 import com.xxx.crm.vo.SaleChance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -41,5 +45,22 @@ public class SaleChanceController extends BaseController {
     @RequestMapping("index")
     public String index() {
         return "/saleChance/sale_chance";
+    }
+
+    /**
+     * 添加营销机会
+     * @param saleChance
+     * @return
+     */
+    @PostMapping("add")
+    @ResponseBody
+    public ResultInfo addSalaChance(SaleChance saleChance, HttpServletRequest request) {
+        // 从cookie中获取当前登录用户名
+        String userName = CookieUtil.getCookieValue(request, "userName");
+        // 设置用户名到营销机会对象中
+        saleChance.setCreateMan(userName);
+        // 调用Service层的添加方法
+        saleChanceService.addSaleChance(saleChance);
+        return success("营销机会数据添加成功！");
     }
 }
