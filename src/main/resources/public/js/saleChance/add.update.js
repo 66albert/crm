@@ -20,6 +20,16 @@ layui.use(['form', 'layer'], function () {
 
         // 发送Ajax请求，请求成功则关闭加载层
         var url = ctx + "/sale_chance/add"; // 添加操作
+
+        // 通过营销机会的id来判断当前需要执行添加操作还是修改操作
+        // 如果营销机会ID为空，则表示添加操作；如果不为空，则表示更新操作
+        // 通过获取隐藏域中的id
+        var saleChanceId = $("[name='id']").val();
+        if (saleChanceId != null && saleChanceId != "") {
+            // 更新操作
+            url = ctx + "/sale_chance/update"
+        }
+
         $.post(url, data.field, function (result) {
             // 判断操作是否执行成功 200=成功，否则失败
             if (result.code == 200) {
@@ -31,7 +41,7 @@ layui.use(['form', 'layer'], function () {
                 // 关闭弹出层
                 parent.layer.closeAll('iframe');
                 // 刷新父窗口，重新加载数据
-                parent.local.reload();
+                parent.location.reload();
             } else {
                 // 失败
                 layer.msg(result.msg, {icon:5});
