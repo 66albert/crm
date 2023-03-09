@@ -65,6 +65,24 @@ public class SaleChanceController extends BaseController {
     }
 
     /**
+     * 更新营销机会
+     * @param saleChance
+     * @param request
+     * @return
+     */
+    @PostMapping("update")
+    @ResponseBody
+    public ResultInfo updateSaleChance(SaleChance saleChance, HttpServletRequest request) {
+        // 从cookie中获取当前登录用户名
+        String userName = CookieUtil.getCookieValue(request, "userName");
+        // 设置用户名到营销机会对象中
+        saleChance.setCreateMan(userName);
+        // 调用Service层的添加方法
+        saleChanceService.updateSaleChance(saleChance);
+        return success("营销机会数据更新成功！");
+    }
+
+    /**
      * 进入添加或者修改营销机会数据页面
      * @return
      */

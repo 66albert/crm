@@ -55,6 +55,7 @@ public class SaleChanceService extends BaseService<SaleChance, Integer> {
         return map;
     }
 
+
     /**
      * 1. 参数校验
      *    - customerName客户名称	非空
@@ -111,6 +112,80 @@ public class SaleChanceService extends BaseService<SaleChance, Integer> {
         AssertUtil.isTrue(saleChanceMapper.insertSelective(saleChance) != 1, "添加营销机会失败！");
     }
 
+
+    /**
+     *1. 参数校验
+     *    - 营销机会ID   非空，数据库中对应的记录存在
+     *    - customerName客户名称	非空
+     *    - linkMan联系人     非空
+     *    - linkPhone联系号码    非空 手机号码格式正确
+     * 2. 设置相关参数的默认值
+     *    - updateTime更新时间     设置为当前系统时间
+     *    - assignMan指派人
+     *      - 原始数据未设置
+     *        - 修改后未设置
+     *          - 不需要操作
+     *        - 修改后已设置
+     *          - assignTime指派时间      设置为当前系统时间
+     *          - 分配状态      已分配 = 1
+     *          - 开发状态      开发中 = 1
+     *      - 原始数据已设置
+     *        - 修改后未设置
+     *          - assignTime指派时间      设置为null
+     *          - 分配状态      未分配 = 0
+     *          - 开发状态      未开发 = 0
+     *        - 修改后已设置
+     *          - 判断修改前后是否是同一个指派人
+     *            - 如果是则不需要操作
+     *            - 如果不是，则更新assignTime指派时间      设置为当前系统时间
+     * 3. 执行更新操作，判断受影响的行数
+     * @param saleChance
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateSaleChance(SaleChance saleChance){
+        // 1. 参数校验
+        // - 营销机会ID   非空，数据库中对应的记录存在
+        AssertUtil.isTrue(null == saleChance.getId(), "待更新记录不存在！");
+        // 通过主键查询对象
+        SaleChance temp = saleChanceMapper.selectByPrimaryKey(saleChance.getId());
+        // 判断数据库中对应记录是否存在
+        AssertUtil.isTrue(temp == null, "待更新记录不存在！");
+        // 参数校验
+        checkSaleChanceParams(saleChance.getCustomerName(), saleChance.getLinkMan(), saleChance.getLinkPhone());
+
+        // 2. 设置相关参数的默认值
+        saleChance.setUpdateDate(new Date());
+        // 判断修改原始数据是否存在
+        if (StringUtils.isBlank(temp.getAssignMan())) {
+            // 原始数据不存在
+            // 判断修改后的值是否存在
+            if (!StringUtils.isBlank(saleChance.getAssignMan())) {
+                // 修改前为空，修改后有值
+                saleChance.setAssignTime(new Date());
+                saleChance.setState(StateStatus.STATED.getType());
+                saleChance.setDevResult(DevResult.DEVING.getStatus());
+            }
+        } else {
+            // 原始数据存在
+            // 判断修改后的值是否存在
+            if (StringUtils.isBlank(saleChance.getAssignMan())) {
+                // 修改前有值，修改后无值
+                saleChance.setAssignTime(null);
+                saleChance.setState(StateStatus.UNSTATE.getType());
+                saleChance.setDevResult(DevResult.UNDEV.getStatus());
+            } else {
+                // 修改前有值,修改后有值
+                // 判断修改前后是否是同一个用户
+                if (!saleChance.getAssignMan().equals(temp.getAssignMan())) {
+                    // 如果不相等
+                    saleChance.setAssignTime(new Date());
+                }
+            }
+        }
+        // 3. 执行更新操作，判断受影响的行数
+        AssertUtil.isTrue(saleChanceMapper.updateByPrimaryKeySelective(saleChance) != 1, "更新营销机会失败！");
+    }
+
     /**
      * 1. 参数校验
      *      - customerName客户名称	非空
@@ -130,4 +205,5 @@ public class SaleChanceService extends BaseService<SaleChance, Integer> {
         // linkPhone联系号码    手机号码格式正确
         AssertUtil.isTrue(!PhoneUtil.isMobile(linkPhone), "联系号码格式不正确！");
     }
+
 }
