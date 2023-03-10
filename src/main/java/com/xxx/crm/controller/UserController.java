@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：刘彬
@@ -113,5 +115,15 @@ public class UserController extends BaseController {
     public String toPasswordPage() {
 
         return "user/password";
+    }
+
+    /**
+     * 查询所有的销售人员
+     * @return
+     */
+    @RequestMapping("queryAllSales")
+    @ResponseBody
+    public List<Map<String, Object>> queryAllSales(){
+        return userService.queryAllSales();
     }
 }

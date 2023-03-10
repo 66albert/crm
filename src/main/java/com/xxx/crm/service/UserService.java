@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author ：刘彬
  * @date ：Created in 2023/3/6 21:22
@@ -161,5 +164,12 @@ public class UserService extends BaseService<User, Integer> {
         AssertUtil.isTrue(StringUtils.isBlank(userPwd), "用户密码不能为空！");
     }
 
+    /**
+     * 查询所有的销售人员
+     * @return
+     */
+    public List<Map<String, Object>> queryAllSales() {
+        return userMapper.queryAllSales();
+    }
 
 }
