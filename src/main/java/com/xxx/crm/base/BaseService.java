@@ -48,7 +48,6 @@ public abstract class BaseService<T,ID> {
         return baseMapper.insertBatch(entities);
     }
 
-
     /**
      * 根据id 查询详情
      * @param id
@@ -57,7 +56,6 @@ public abstract class BaseService<T,ID> {
     public T selectByPrimaryKey(ID id) throws DataAccessException{
         return baseMapper.selectByPrimaryKey(id);
     }
-
 
     /**
      * 多条件查询
@@ -68,7 +66,6 @@ public abstract class BaseService<T,ID> {
         return baseMapper.selectByParams(baseQuery);
     }
 
-
     /**
      * 更新单条记录
      * @param entity
@@ -77,7 +74,6 @@ public abstract class BaseService<T,ID> {
     public Integer updateByPrimaryKeySelective(T entity) throws DataAccessException{
         return baseMapper.updateByPrimaryKeySelective(entity);
     }
-
 
     /**
      * 批量更新
