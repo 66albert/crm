@@ -97,4 +97,17 @@ public class SaleChanceController extends BaseController {
         }
         return "saleChance/add_update";
     }
+
+    /**
+     * 批量逻辑删除营销机会
+     * @param ids
+     * @return
+     */
+    @PostMapping("delete")
+    @ResponseBody
+    public ResultInfo deletSaleChance(Integer[] ids) {
+        // 调用service层的删除方法
+        saleChanceService.deleteBatch(ids);
+        return success("营销机会删除成功！");
+    }
 }

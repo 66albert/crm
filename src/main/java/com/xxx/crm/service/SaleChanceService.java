@@ -206,4 +206,16 @@ public class SaleChanceService extends BaseService<SaleChance, Integer> {
         AssertUtil.isTrue(!PhoneUtil.isMobile(linkPhone), "联系号码格式不正确！");
     }
 
+    /**
+     * 批量删除营销机会
+     * @param ids
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteSaleChance(Integer[] ids) {
+        // 判断ID是否为空
+        AssertUtil.isTrue(null == ids || ids.length < 1, "待删除记录不存在！");
+        // 执行逻辑删除操作，判断受影响的行数
+        AssertUtil.isTrue(saleChanceMapper.deleteBatch(ids) != ids.length, "营销机会删除失败！");
+    }
+
 }
