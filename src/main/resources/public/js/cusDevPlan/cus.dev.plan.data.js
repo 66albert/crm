@@ -50,8 +50,34 @@ layui.use(['table', 'layer'], function () {
             // 更新操作
             // 打开添加或修改计划项的页面
             openAddOrUpdateCusDevPlanDialog(data.data.id);
+        } else if (data.event == 'del') {
+            // 删除操作
+            deleteCusDevPlan(data.data.id);
         }
     });
+
+    /**
+     * 删除计划项
+     * @param id
+     */
+    function deleteCusDevPlan(id) {
+        // 弹出确认框，询问用户是否删除
+        layer.confirm('您确认要删除该记录吗?', {icon:3, title:'开发项数据管理'}, function (index) {
+            // 发送Ajax请求，执行删除操作
+            $.post(ctx + '/cus_dev_plan/delete',{id:id}, function (result) {
+               // 判断删除结果
+               if (result.code == 200) {
+                   // 成功,提示成功
+                   layer.msg('删除成功！',{icon:6});
+                   // 刷新数据表格
+                   tableIns.reload();
+               } else {
+                   // 失败，提示原因
+                   layer.msg(result.msg,{icon:5});
+               }
+            });
+        });
+    }
 
     /**
      * 监听头部工具栏
@@ -64,10 +90,12 @@ layui.use(['table', 'layer'], function () {
             openAddOrUpdateCusDevPlanDialog();
         } else if (data.event == 'success') {
             // 开发成功
-
-        } else if (data.event == 'false') {
+            // 更新营销机会的开发状态
+            updateSaleChanceDevResult(2);   // 开发成功
+        } else if (data.event == 'failed') {
             // 开发失败
-
+            // 更新营销机会的开发状态
+            updateSaleChanceDevResult(3);   // 开发失败
         }
     });
 
@@ -94,6 +122,32 @@ layui.use(['table', 'layer'], function () {
             content: url,
             // 可以最大最小化
             maxmin:true
+        });
+    }
+
+    /**
+     * 更新营销机会的开发状态
+     * @param devResult
+     */
+    function updateSaleChanceDevResult(devResult) {
+        // 弹出确认框询问用户是否确认
+        layer.confirm("您确认执行该操作吗?",{icon:3, title:'营销机会管理'}, function (index) {
+            // 得到需要被更新的营销机会的ID（隐藏域中获取）
+            var sId = $("[name='id']").val();
+            // 发送Ajax请求，更新营销机会的开发状态
+            $.post(ctx + "/sale_chance/updateSaleChanceDevResult", {id:sId, devResult:devResult}, function (result) {
+                if (result.code == 200) {
+                    // 成功
+                    layer.msg('更新成功！', {icon:6});
+                    // 关闭窗口
+                    layer.closeAll('iframe');
+                    // 刷新父页面
+                    parent.location.reload();
+                } else {
+                    // 失败
+                    layer.msg(result.msg, {icon:5});
+                }
+            });
         });
     }
 });

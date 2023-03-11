@@ -112,4 +112,17 @@ public class CusDevPlanController extends BaseController {
         cusDevPlanService.updateCusDevPlan(cusDevPlan);
         return success("计划项更新成功！");
     }
+
+    /**
+     * 删除计划项
+     * @param id
+     * @return
+     */
+    @PostMapping("delete")
+    @ResponseBody
+    public ResultInfo deleteCusDevPlan(Integer id){
+        cusDevPlanService.deleteCusDevPlan(id);
+        return success("计划项删除成功！");
+    }
+
 }
