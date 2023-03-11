@@ -1,15 +1,18 @@
 package com.xxx.crm.controller;
 
 import com.xxx.crm.base.BaseController;
+import com.xxx.crm.base.ResultInfo;
 import com.xxx.crm.enums.StateStatus;
 import com.xxx.crm.query.CusDevPlanQuery;
 import com.xxx.crm.query.SaleChanceQuery;
 import com.xxx.crm.service.CusDevPlanService;
 import com.xxx.crm.service.SaleChanceService;
 import com.xxx.crm.utils.LoginUserUtil;
+import com.xxx.crm.vo.CusDevPlan;
 import com.xxx.crm.vo.SaleChance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -67,5 +70,46 @@ public class CusDevPlanController extends BaseController {
     public Map<String, Object> queryCusDevPlanByParams(CusDevPlanQuery cusDevPlanQuery) {
 
         return cusDevPlanService.queryCusDevPlanByParams(cusDevPlanQuery);
+    }
+
+    /**
+     * 添加计划项数据
+     * @param cusDevPlan
+     * @return
+     */
+    @PostMapping("add")
+    @ResponseBody
+    public ResultInfo addCusDevPlan(CusDevPlan cusDevPlan) {
+        cusDevPlanService.addCusDevPlan(cusDevPlan);
+        return success("计划项添加成功！");
+    }
+
+    /**
+     * 进入添加或修改计划项的页面
+     * @return
+     */
+    @RequestMapping("toAddOrUpdateCusDevPlanPage")
+    public String toAddOrUpdateCusDevPlanPage(Integer sId, HttpServletRequest request, Integer id) {
+        // 将营销机会id设置到请求域中，给计划项页面获取
+        request.setAttribute("sId", sId);
+
+        // 通过计划项ID查询记录
+        CusDevPlan cusDevPlan = cusDevPlanService.selectByPrimaryKey(id);
+        // 将计划项数据设置到请求域中
+        request.setAttribute("cusDevPlan", cusDevPlan);
+
+        return "cusDevPlan/add_update";
+    }
+
+    /**
+     * 更新计划项数据
+     * @param cusDevPlan
+     * @return
+     */
+    @PostMapping("update")
+    @ResponseBody
+    public ResultInfo updateCusDevPlan(CusDevPlan cusDevPlan) {
+        cusDevPlanService.updateCusDevPlan(cusDevPlan);
+        return success("计划项更新成功！");
     }
 }
