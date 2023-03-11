@@ -38,10 +38,10 @@ mybatis:
   pagehelper:
     helper-dialect: mysql
 
-  ## 设置 dao 日志打印级别
-  logging:
-    level:
-      com:
-        xxx:
-          crm:
-            dao: debug
+## 设置 dao 日志打印级别
+logging:
+  level:
+    com:
+      xxx:
+        crm:
+          dao: debug

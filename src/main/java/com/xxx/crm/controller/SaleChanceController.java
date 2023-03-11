@@ -2,9 +2,11 @@ package com.xxx.crm.controller;
 
 import com.xxx.crm.base.BaseController;
 import com.xxx.crm.base.ResultInfo;
+import com.xxx.crm.enums.StateStatus;
 import com.xxx.crm.query.SaleChanceQuery;
 import com.xxx.crm.service.SaleChanceService;
 import com.xxx.crm.utils.CookieUtil;
+import com.xxx.crm.utils.LoginUserUtil;
 import com.xxx.crm.vo.SaleChance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,12 +31,22 @@ public class SaleChanceController extends BaseController {
 
     /**
      * 营销机会数据查询（分页多条件查询）
+     *  如果flag的值不为空，且值为1，则表示当前查询的是客户开发计划；否则查询营销机会数据
      * @param saleChanceQuery
      * @return
      */
     @RequestMapping("list")
     @ResponseBody
-    public Map<String, Object> querySaleChanceByParams(SaleChanceQuery saleChanceQuery) {
+    public Map<String, Object> querySaleChanceByParams(SaleChanceQuery saleChanceQuery, Integer flag, HttpServletRequest request) {
+        // 判断flag的值
+        if (flag != null && flag == 1) {
+            // 查询的是客户开发计划
+            // 设置分配状态
+            saleChanceQuery.setState(StateStatus.STATED.getType());
+            // 设置指派人（当前登录用户的id），从cookie中获取当前登录用户的id
+            Integer userId = LoginUserUtil.releaseUserIdFromCookie(request);
+            saleChanceQuery.setAssignMan(userId);
+        }
         return saleChanceService.querySaleChanceByParams(saleChanceQuery);
     }
 
