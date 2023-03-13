@@ -7,6 +7,7 @@ import com.xxx.crm.model.UserMode;
 import com.xxx.crm.query.UserQuery;
 import com.xxx.crm.service.UserService;
 import com.xxx.crm.utils.LoginUserUtil;
+import com.xxx.crm.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -147,5 +148,36 @@ public class UserController extends BaseController {
     @RequestMapping("index")
     public String index() {
         return "user/user";
+    }
+
+    @PostMapping("add")
+    @ResponseBody
+    public ResultInfo addUser(User user) {
+        userService.addUser(user);
+        return success("用户添加成功！");
+    }
+
+    @PostMapping("update")
+    @ResponseBody
+    public ResultInfo updateUser(User user) {
+        userService.updateUser(user);
+        return success("用户更新成功！");
+    }
+
+    /**
+     * 打开添加或修改页面
+     * @return
+     */
+    @RequestMapping("toAddOrUpdateUserPage")
+    public String toAddOrUpdateUserPage(Integer id, HttpServletRequest request) {
+        // 判断id是否为空，不为空表示更新操作，查询用户对象
+        if (id != null) {
+            // 通过id查询对象
+            User user = userService.selectByPrimaryKey(id);
+            // 将数据设置到请求域中
+            request.setAttribute("userInfo",user);
+        }
+
+        return "user/add_update";
     }
 }

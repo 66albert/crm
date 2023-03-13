@@ -66,4 +66,58 @@ layui.use(['table','layer'],function(){
         });
     });
 
+    /**
+     * 监听头部工具栏
+     */
+    table.on('toolbar(users)', function (data) {
+        if (data.event == 'add') {
+            // 添加用户
+            // 打开添加或修改用户对话框
+            openAddOrUpdateUserDialog();
+
+        } else if (data.event == 'del') {
+            // 删除用户
+
+        }
+    });
+
+    /**
+     * 监听行工具栏
+     */
+    table.on('tool(users)', function (data) {
+        if (data.event == 'edit') {
+            // 打开添加或修改用户信息框
+            openAddOrUpdateUserDialog(data.data.id);
+        } else if (data.event == 'del') {
+
+        }
+    });
+
+    /**
+     * 打开添加或修改用户对话框
+     */
+    function openAddOrUpdateUserDialog(id) {
+        var title = "<h3>用户管理 - 添加用户</h3>";
+        var url =ctx + "/user/toAddOrUpdateUserPage";
+
+        // 判断id是否为空，如果为空则是添加操作，否则是修改操作
+        if (id != null && id != ''){
+            title = "<h3>用户管理 - 更新用户</h3>";
+            url =ctx + "/user/toAddOrUpdateUserPage?id=" + id;  // 传递主键，查询数据
+        }
+
+        // iframe层
+        layui.layer.open({
+            // 类型
+            type: 2,
+            // 标题
+            title: title,
+            // 宽高
+            area: ['650px', '400px'],
+            // url地址
+            content: url,
+            // 可以最大最小化
+            maxmin:true
+        });
+    }
 });
