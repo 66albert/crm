@@ -18,4 +18,5 @@ public interface UserMapper extends BaseMapper<User, Integer> {
      */
     List<Map<String, Object>> queryAllSales();
 
+
 }

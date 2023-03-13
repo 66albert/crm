@@ -263,4 +263,16 @@ public class UserService extends BaseService<User, Integer> {
         AssertUtil.isTrue(userMapper.updateByPrimaryKeySelective(user) != 1, "用户更新失败！");
     }
 
+    /**
+     * 用户删除
+     *
+     * @param ids
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteByIds(Integer[] ids) {
+        // 判断IDS是否为空，长度是否大于0
+        AssertUtil.isTrue(ids == null || ids.length == 0, "待删除记录不存在！");
+        // 执行删除操作，判断受影响的行数
+        AssertUtil.isTrue(userMapper.deleteBatch(ids) != ids.length, "用户删除失败！");
+    }
 }

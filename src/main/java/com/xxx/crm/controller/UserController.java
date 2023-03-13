@@ -180,4 +180,17 @@ public class UserController extends BaseController {
 
         return "user/add_update";
     }
+
+    /**
+     * 用户删除
+     *
+     * @param ids
+     * @return
+     */
+    @RequestMapping("delete")
+    @ResponseBody
+    public ResultInfo deleteUser(Integer[] ids) {
+        userService.deleteByIds(ids);
+        return success("用户删除成功！");
+    }
 }
