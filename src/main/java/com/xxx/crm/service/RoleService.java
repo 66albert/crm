@@ -24,7 +24,7 @@ public class RoleService extends BaseService<Role, Integer> {
      * 查询所有的角色列表
      * @return
      */
-    public List<Map<String, Object>> queryAllRoles() {
-        return roleMapper.queryAllRoles();
+    public List<Map<String, Object>> queryAllRoles(Integer userId) {
+        return roleMapper.queryAllRoles(userId);
     }
 }

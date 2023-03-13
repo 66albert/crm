@@ -105,12 +105,19 @@
   </update>
 
   <!-- 查询所有角色列表 -->
-  <select id="queryAllRoles" resultType="java.util.Map">
-    select
-        id, role_name roleName
-    from
-        t_role
-    where
-        is_valid = 1
+  <select id="queryAllRoles" parameterType="int" resultType="java.util.Map">
+    SELECT
+      r.id,
+      r.role_name as roleName,
+      CASE
+        WHEN IFNULL(temp.id,0) = 0 THEN ''
+        ELSE 'selected'
+        END
+      AS 'selected'
+    FROM
+      t_role r
+        LEFT JOIN ( SELECT r.id FROM t_role r LEFT JOIN t_user_role ur ON r.id = ur.role_id WHERE user_id = #{userId} ) temp ON r.id = temp.id
+    WHERE
+      r.is_valid = 1
   </select>
 </mapper>
